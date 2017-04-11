@@ -28,15 +28,6 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_arith.all;
 use ieee.numeric_std.all;
 
-package tap_array is
-    type  tap_array is array(integer range <>) of std_logic_vector(15 downto 0);
-end tap_array;
-
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.std_logic_arith.all;
-use ieee.numeric_std.all;
-
 use work.tap_array.all;
 
 entity DD_FILTER is
