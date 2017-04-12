@@ -33,7 +33,7 @@ use ieee.numeric_std.all;
 
 use work.tap_array.all;
 
-entity FIR_FILTER is
+entity ERROR_UNIT is
     generic (
         n_taps  :  integer := 16
     );
@@ -44,4 +44,4 @@ entity FIR_FILTER is
         taps_error :  out tap_array(0 to n_taps - 1);
         error_out  :  out std_logic_vector(15 downto 0)
     );
-end FIR_FILTER;
+end ERROR_UNIT;

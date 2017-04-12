@@ -46,6 +46,9 @@ end DD_FILTER;
 
 architecture DD_FILTER_ARCH of DD_FILTER is
     component FIR_FILTER
+        generic (
+            n_taps  :  integer := 16
+        );
         port (
             clock      :  in  std_logic;
             reset      :  in  std_logic;
@@ -58,6 +61,9 @@ architecture DD_FILTER_ARCH of DD_FILTER is
     end component;
 
     component ERROR_UNIT
+        generic (
+            n_taps  :  integer := 16
+        );
         port (
             data_in    :  in  std_logic_vector(15 downto 0);
             data_out   :  in  std_logic_vector(15 downto 0);
@@ -71,6 +77,9 @@ architecture DD_FILTER_ARCH of DD_FILTER is
     signal taps        :  tap_array(0 to n_taps - 1);
 begin
     filter  :  FIR_FILTER
+        generic map (
+            n_taps => n_taps
+        )
         port map (
             clock      => clock,
             reset      => reset,
@@ -81,6 +90,9 @@ begin
             data_out   => data_out
         );
     error  :  ERROR_UNIT
+        generic map (
+            n_taps => n_taps
+        )
         port map (
             data_in    => data_in,
             data_out   => data_out,
