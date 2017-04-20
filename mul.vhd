@@ -48,9 +48,9 @@ architecture MUL_ARRAY_ARCH of MUL_ARRAY is
     end component;
     type std_array is array (0 to n - 1) of std_logic;
     type mul_array is array (0 to n - 2) of std_array;
-    signal a  :  mul_array;
-    signal b  :  mul_array;
-    signal c  : mul_array;
+    signal a  :  mul_array;     -- Summand coming into each adder
+    signal b  :  mul_array;     -- Summand coming into each adder
+    signal c  : mul_array;      -- Sum coming out of each adder
     signal cout : mul_array;
 begin
     -- Generate rows
@@ -99,7 +99,7 @@ begin
             end generate;
             REST_ROWS : if i > 0 generate
             begin
-                a(i)(j) <= c(i - 1)(j + 1);
+                a(i)(j) <= c(i - 1)(j);
                 FIRST_COLUMN : if j = 0 generate
                 begin
                     U4 : FullAdder
