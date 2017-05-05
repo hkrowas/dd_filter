@@ -45,3 +45,18 @@ entity ERROR_UNIT is
         error_out  :  out std_logic_vector(15 downto 0)
     );
 end ERROR_UNIT;
+
+architecture ERROR_UNIT_ARCH of ERROR_UNIT is
+    component COM_MUL_ARRAY
+        generic (
+            n  :  integer := 16
+        );
+        port (
+            z  :  in  com;
+            w  :  in  com;
+            c  :  out com
+        );
+    end component;
+begin
+
+end ERROR_UNIT_ARCH;

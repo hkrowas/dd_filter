@@ -52,6 +52,9 @@ architecture COM_MUL_ARRAY_ARCH of COM_MUL_ARRAY is
     signal yv  :  std_logic_vector(31 downto 0);
     signal yu  :  std_logic_vector(31 downto 0);
     signal xv  :  std_logic_vector(31 downto 0);
+
+    signal c0_conv : std_logic_vector(2 * n - 1 downto 0);
+    signal c1_conv : std_logic_vector(2 * n - 1 downto 0);
 begin
     XU_MUL : MUL_ARRAY
     port map (
@@ -77,6 +80,8 @@ begin
         y => w(1),
         z => xv
     );
-    c(0) <= xu - yv;
-    c(1) <= yu + xv;
+    c0_conv <= xu - yv;
+    c1_conv <= yu + xv;
+    c(0) <= c0_conv(15 downto 0);
+    c(1) <= c1_conv(15 downto 0);
 end COM_MUL_ARRAY_ARCH;

@@ -47,9 +47,9 @@ entity FIR_FILTER is
 end FIR_FILTER;
 
 architecture FIR_FILTER_ARCH of FIR_FILTER is
-    signal ein : tap_array(n_taps - 1 downto 0);
-    signal products : tap_array(n_taps - 1 downto 0);
-    signal sums : tap_array(n_taps - 1 downto 0);
+    signal ein : tap_array(0 to n_taps - 1);
+    signal products : tap_array(0 to n_taps - 1);
+    signal sums : tap_array(0 to n_taps - 1);
     component COM_MUL_ARRAY
         generic (
             n  :  integer := 16
