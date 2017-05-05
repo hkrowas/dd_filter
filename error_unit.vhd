@@ -43,7 +43,7 @@ entity ERROR_UNIT is
         taps_in    :  in  tap_array(0 to n_taps - 1);
         taps       :  out tap_array(0 to n_taps - 1);
         taps_error :  out tap_array(0 to n_taps - 1);
-        error_out  :  out std_logic_vector(15 downto 0)
+        error_out  :  out com
     );
 end ERROR_UNIT;
 
@@ -114,4 +114,5 @@ begin
         taps(i)(0) <= taps_in(i)(0) + mu_e_in(i)(0);
         taps(i)(1) <= taps_in(i)(1) + mu_e_in(i)(1);
     end generate;
+    error_out <= e;
 end ERROR_UNIT_ARCH;

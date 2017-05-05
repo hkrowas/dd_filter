@@ -16,7 +16,6 @@ use ieee.std_logic_unsigned.all;
 
 use work.tap_array.all;
 
-
 entity FIR_FILTER_TB is
 end FIR_FILTER_TB;
 
@@ -75,7 +74,7 @@ begin
     data_out1 <= data_out(1);
     process
     begin
-        taps_in <= ((x"0001", x"0000"), (x"0001", x"0000"), (x"0000", x"0000")
+        taps_in <= ((x"7FFF", x"0000"), (x"7FFF", x"0000"), (x"0000", x"0000")
                   , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
                   , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
                   , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
