@@ -16,8 +16,8 @@ def int_to_bin(datain):
 N = 10000
 p2 = 0x3000
 p1 = 0x1000
-m2 = -p2
-m1 = -p1
+m2 = 0xB000
+m1 = 0x9000
 
 constellation = np.array([complex(m2, p2), complex(m1, p2), complex (p1, p2),
 complex(p2, p2), complex(m2, p1), complex(m1, p1), complex (p1, p1),
