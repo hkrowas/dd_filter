@@ -7,8 +7,8 @@ package tap_array is
     type  com is array(0 to 1) of std_logic_vector(15 downto 0);
     type  tap_array is array(integer range <>) of com;
     type  constellation_array is array(0 to 15) of com;
-    constant p1  :  std_logic_vector(15 downto 0) := x"2000";
-    constant p2  :  std_logic_vector(15 downto 0) := x"4000";
+    constant p1  :  std_logic_vector(15 downto 0) := x"1000";
+    constant p2  :  std_logic_vector(15 downto 0) := x"3000";
     constant p2_p1 : std_logic_vector(15 downto 0) := p2 + p1;
     constant p2_p1_d_2 : std_logic_vector(15 downto 0) := '0' & p2_p1(15 downto 1);
     constant m1  :  std_logic_vector(15 downto 0) := '1' & p1(14 downto 0);
