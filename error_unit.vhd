@@ -42,8 +42,8 @@ entity ERROR_UNIT is
         data_out   :  in  com;
         taps_in    :  in  tap_array(0 to n_taps - 1);
         taps       :  out tap_array(0 to n_taps - 1);
-        taps_error :  out tap_array(0 to n_taps - 1);
-        error_out  :  out com
+        error_out  :  out com;
+        d          : out com
     );
 end ERROR_UNIT;
 
@@ -74,6 +74,8 @@ architecture ERROR_UNIT_ARCH of ERROR_UNIT is
     signal e : com;
     signal mu : std_logic_vector(15 downto 0) := x"0010";
     signal mu_e : com;
+    signal mu_e_0_32 : std_logic_vector(31 downto 0);
+    signal mu_e_1_32 : std_logic_vector(31 downto 0);
     signal mu_e_in : tap_array(0 to n_taps - 1);
     signal data_in_mul : tap_array(0 to n_taps - 1);
 begin
@@ -87,20 +89,25 @@ begin
     const_i(0) <= bot(15);
     e(0) <= QAM16(to_integer(unsigned(const_i)))(0) - data_out(0);
     e(1) <= QAM16(to_integer(unsigned(const_i)))(1) - data_out(1);
+    d(0) <= QAM16(to_integer(unsigned(const_i)))(0);
+    d(1) <= QAM16(to_integer(unsigned(const_i)))(1);
     -- Calculate error
     E_R_MUL : MUL_ARRAY
     port map (
         x => e(0),
         y => mu,
-        z(30 downto 15) => mu_e(0)
+        z => mu_e_0_32
     );
     E_I_MUL : MUL_ARRAY
     port map (
         x => e(1),
         y => mu,
-        z(30 downto 15) => mu_e(1)
+        z => mu_e_1_32
     );
+    mu_e(0) <= mu_e_0_32(30 downto 15);
+    mu_e(1) <= mu_e_1_32(30 downto 15);
     MU_E_IN_MUL_generate : for i in 0 to n_taps - 1 generate
+        -- Take complex conjugate of Ein.
         data_in_mul(i)(0) <= data_in(i)(0);
         data_in_mul(i)(1) <= not(data_in(i)(1)) + 1;
         MU_E_IN_MUL : COM_MUL_ARRAY
