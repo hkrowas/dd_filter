@@ -36,10 +36,10 @@ entity DD_FILTER is
     );
     port (
         clock      :  in  std_logic;
-        data_in    :  in  std_logic_vector(15 downto 0);
+        data_in    :  in  com;
         taps_reset :  in  tap_array(0 to n_taps - 1);
         reset      :  in  std_logic;
-        data_out   :  buffer std_logic_vector(15 downto 0);
+        data_out   :  buffer com;
         error_out  :  out std_logic_vector(15 downto 0)
     );
 end DD_FILTER;
@@ -51,30 +51,32 @@ architecture DD_FILTER_ARCH of DD_FILTER is
         );
         port (
             clock      :  in  std_logic;
-            reset      :  in  std_logic;
-            taps_error :  in  tap_array(0 to n_taps - 1);
+            data_in    :  in  com;
             taps_reset :  in  tap_array(0 to n_taps - 1);
-            data_in    :  in  std_logic_vector(15 downto 0);
-            taps       :  out tap_array(0 to n_taps - 1);
-            data_out   :  buffer std_logic_vector(15 downto 0)
+            taps_in    :  in  tap_array(0 to n_taps - 1);
+            reset      :  in  std_logic;
+            ein        :  buffer tap_array(0 to n_taps - 1);
+            taps       :  buffer tap_array(0 to n_taps - 1);
+            data_out   :  buffer com
         );
     end component;
-
     component ERROR_UNIT
         generic (
             n_taps  :  integer := 16
         );
         port (
-            data_in    :  in  std_logic_vector(15 downto 0);
-            data_out   :  in  std_logic_vector(15 downto 0);
-            taps       :  in  tap_array(0 to n_taps - 1);
-            taps_error :  out tap_array(0 to n_taps - 1);
-            error_out  :  out std_logic_vector(15 downto 0)
+            data_in    :  in  tap_array(0 to n_taps - 1);
+            data_out   :  in  com;
+            taps_in    :  in  tap_array(0 to n_taps - 1);
+            taps       :  out tap_array(0 to n_taps - 1);
+            error_out  :  out com;
+            d          :  out com
         );
     end component;
-
+    signal taps_in     :  tap_array(0 to n_taps - 1);
     signal taps_error  :  tap_array(0 to n_taps - 1);
     signal taps        :  tap_array(0 to n_taps - 1);
+    signal ein         :  tap_array(0 to n_taps - 1);
 begin
     filter  :  FIR_FILTER
         generic map (
@@ -82,10 +84,11 @@ begin
         )
         port map (
             clock      => clock,
-            reset      => reset,
-            taps_error => taps_error,
-            taps_reset => taps_reset,
             data_in    => data_in,
+            taps_reset => taps_reset,
+            taps_in    => taps_in,
+            reset      => reset,
+            ein        => ein,
             taps       => taps,
             data_out   => data_out
         );
@@ -94,10 +97,10 @@ begin
             n_taps => n_taps
         )
         port map (
-            data_in    => data_in,
+            data_in    => ein,
             data_out   => data_out,
-            taps       => taps,
-            taps_error => taps_error,
-            error_out  => error_out
+            taps_in    => taps,
+            taps       => taps_in
+            --error_out  => error_out
         );
 end DD_FILTER_ARCH;

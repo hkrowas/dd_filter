@@ -4,14 +4,19 @@ import matplotlib.pyplot as plt
 
 def bin_to_int(strin):
     ret = 0
-    for i in range(1, 16):
-        if (strin[i] is "1"):
-            ret += 2**(15 - i)
-    if (strin[0] is "1"):
+    if (strin[0] is "0"):
+        for i in range(1, 16):
+            if (strin[i] is "1"):
+                ret += 2**(15 - i)
+    else:
+        for i in range(1, 16):
+            if (strin[i] is "0"):
+                ret += 2**(15 - i)
+        ret += 1
         ret *= -1
     return ret
 
-N = 10000
+N = 1000
 p2 = 0x3000
 p1 = 0x1000
 m2 = -p2

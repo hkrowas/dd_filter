@@ -41,13 +41,21 @@ entity FIR_FILTER is
         taps_reset :  in  tap_array(0 to n_taps - 1);
         taps_in    :  in  tap_array(0 to n_taps - 1);
         reset      :  in  std_logic;
-        taps       :  buffer tap_array(0 to n_taps - 1);
+        ein        :  buffer tap_array(0 to n_taps - 1) :=
+        ((x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
+       , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
+       , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
+       , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"));
+        taps       :  buffer tap_array(0 to n_taps - 1) :=
+        ((x"70FF", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
+       , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
+       , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
+       , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"));
         data_out   :  buffer com
     );
 end FIR_FILTER;
 
 architecture FIR_FILTER_ARCH of FIR_FILTER is
-    signal ein : tap_array(0 to n_taps - 1);
     signal products : tap_array(0 to n_taps - 1);
     signal sums : tap_array(0 to n_taps - 1);
     component COM_MUL_ARRAY
