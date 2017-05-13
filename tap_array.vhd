@@ -11,8 +11,8 @@ package tap_array is
     constant p2  :  std_logic_vector(15 downto 0) := x"3000";
     constant p2_p1 : std_logic_vector(15 downto 0) := p2 + p1;
     constant p2_p1_d_2 : std_logic_vector(15 downto 0) := '0' & p2_p1(15 downto 1);
-    constant m1  :  std_logic_vector(15 downto 0) := '1' & p1(14 downto 0);
-    constant m2  :  std_logic_vector(15 downto 0) := '1' & p2(14 downto 0);
+    constant m1  :  std_logic_vector(15 downto 0) := not(p1) + 1;
+    constant m2  :  std_logic_vector(15 downto 0) := not(p2) + 1;
     -- 16QAM constellation used:
     --  2  6  14  10
     --  3  7  15  11

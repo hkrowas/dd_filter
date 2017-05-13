@@ -19,6 +19,7 @@
 --
 --  Outputs:
 --      taps         -  Value of taps
+--      ein          -  Current input on delay line of the filter
 --      data_out     -  Output data from filter.
 --
 --  Generic:
@@ -47,7 +48,7 @@ entity FIR_FILTER is
        , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
        , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"));
         taps       :  buffer tap_array(0 to n_taps - 1) :=
-        ((x"70FF", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
+        ((x"7EFF", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
        , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
        , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000")
        , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"));
@@ -95,11 +96,15 @@ begin
             for i in 1 to n_taps - 1 loop
                 ein(i) <= ein(i - 1);
             end loop;
+            taps <= taps_in;
             -- Taps update
             if (reset = '1') then
                 taps <= taps_reset;
-            else
-                taps <= taps_in;
+                taps(0)(0) <= x"7EFF";
+                for i in 1 to n_taps - 1 loop
+                    ein(i)(0) <= x"0000";
+                    ein(i)(1) <= x"0000";
+                end loop;
             end if;
         end if;
     end process;

@@ -22,14 +22,14 @@ m1 = -p2
 print(m2)
 print(m1)
 
-constellation = np.array([complex(m2, p2), complex(m1, p2), complex (p1, p2),
-complex(p2, p2), complex(m2, p1), complex(m1, p1), complex (p1, p1),
-complex(p2, p1), complex(m2, m1), complex(m1, m1), complex (p1, m1),
-complex(p2, m1), complex(m2, m2), complex(m1, m2), complex (p1, m2),
+constellation = np.array([complex(m2, p2), complex(m1, p2), complex(p1, p2),
+complex(p2, p2), complex(m2, p1), complex(m1, p1), complex(p1, p1),
+complex(p2, p1), complex(m2, m1), complex(m1, m1), complex(p1, m1),
+complex(p2, m1), complex(m2, m2), complex(m1, m2), complex(p1, m2),
 complex(p2, m2)])
 
 # Generate input constellation
-datain = np.array([constellation[random.randint(0, 15)] for i in range(N)])
+datain = np.array([constellation[random.randint(0, 15)] for i in range(N)]) * complex(0.99, 0.0998)
 
 f = open('input', 'w')
 

@@ -78,17 +78,25 @@ architecture ERROR_UNIT_ARCH of ERROR_UNIT is
     signal mu_e_1_32 : std_logic_vector(31 downto 0);
     signal mu_e_in : tap_array(0 to n_taps - 1);
     signal data_in_mul : tap_array(0 to n_taps - 1);
+    signal e0 : std_logic_vector(15 downto 0);
+    signal e1 : std_logic_vector(15 downto 0);
 begin
     -- Use sign of real and imaginary parts of data_out to determine quadrant.
     const_i(3) <= not(data_out(0)(15));
     const_i(1) <= not(data_out(1)(15));
     -- Find whether data_out is in bottom and left of the quadrant.
-    bot <= ('0' & data_out(1)(14 downto 0)) - p2_p1_d_2;
-    left <= ('0' & data_out(0)(14 downto 0)) - p2_p1_d_2;
+    with data_out(1)(15) select
+    bot <= data_out(1) - p2_p1_d_2          when '0',
+           not(data_out(1)) + 1 - p2_p1_d_2 when others;
+    with data_out(0)(15) select
+    left <= data_out(0) - p2_p1_d_2          when '0',
+            not(data_out(0)) + 1 - p2_p1_d_2 when others;
     const_i(2) <= left(15);
     const_i(0) <= bot(15);
     e(0) <= QAM16(to_integer(unsigned(const_i)))(0) - data_out(0);
     e(1) <= QAM16(to_integer(unsigned(const_i)))(1) - data_out(1);
+    e0 <= QAM16(to_integer(unsigned(const_i)))(0) - data_out(0);
+    e1 <= QAM16(to_integer(unsigned(const_i)))(1) - data_out(1);
     d(0) <= QAM16(to_integer(unsigned(const_i)))(0);
     d(1) <= QAM16(to_integer(unsigned(const_i)))(1);
     -- Calculate error

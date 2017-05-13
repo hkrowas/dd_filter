@@ -36,7 +36,7 @@ datastr = datastr.rsplit(" ")
 data_out = np.array([complex(bin_to_int(datastr[2 * i]), bin_to_int(datastr[2 * i + 1]))
     for i in range(N)])
 
-plt.scatter(data_out.real, data_out.imag)
+plt.scatter(data_out.real[:10], data_out.imag[:10])
 plt.show()
 
 f.close()
