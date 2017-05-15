@@ -1,15 +1,15 @@
 ----------------------------------------------------------------------------
 --
---  Array Multiplier
+--  Signed Array Multiplier
 --
---  This is an implementation of an array multiplier. It is entirely
+--  This is an implementation of a signed array multiplier. It is entirely
 --  combinational.
 --
 --  Revision History:
---      2017-04-12   Harrison Krowas   Initial Revision
+--      2017-05-14   Harrison Krowas   Initial Revision
 ----------------------------------------------------------------------------
 
---  MUL_ARRAY
+--  IMUL_ARRAY
 --
 --  Inputs:
 --      x  -  First multiplicand
@@ -26,7 +26,7 @@ use ieee.numeric_std.all;
 
 use work.tap_array.all;
 
-entity MUL_ARRAY is
+entity IMUL_ARRAY is
     generic (
         n  :  integer := 16
     );
@@ -35,9 +35,9 @@ entity MUL_ARRAY is
         y  :  in  std_logic_vector(n - 1 downto 0);
         z  :  out std_logic_vector(2 * n - 1 downto 0)
     );
-end MUL_ARRAY;
+end IMUL_ARRAY;
 
-architecture MUL_ARRAY_ARCH of MUL_ARRAY is
+architecture IMUL_ARRAY_ARCH of IMUL_ARRAY is
     component FullAdder
         port (
             A, B  :  in   std_logic;       --  addends
@@ -99,7 +99,7 @@ begin
                     );
                 end generate;
             end generate;
-            MIDDLE_ROWS : if i > 0 and i < n - 1 generate
+            MIDDLE_ROWS : if i > 0 and i < n - 2 generate
             begin
                 a(i)(j) <= c(i - 1)(j);
                 FIRST_COLUMN : if j = 0 generate
@@ -115,7 +115,7 @@ begin
                 end generate;
                 REST_COLUMNS : if j > 0 and j < n - 1 generate
                 begin
-                    U2 : FullAdder
+                    U5 : FullAdder
                     port map (
                         A => a(i)(j + 1),
                         B => b(i)(j),
@@ -126,25 +126,25 @@ begin
                 end generate;
                 LAST_COLUMN : if j = n - 1 generate
                 begin
-                    U3 : FullAdder
+                    U6 : FullAdder
                     port map (
                         A => cout(i - 1)(j),
-                        B => not(b(i)(j)),
+                        B => "not"(b(i)(j)),
                         Cin => cout(i)(j - 1),
                         Sum => c(i)(j),
                         Cout => cout(i)(j)
                     );
                 end generate;
             end generate;
-            LAST_ROW : if i = n - 1 generate
+            LAST_ROW : if i = n - 2 generate
             begin
                 a(i)(j) <= c(i - 1)(j);
                 FIRST_COLUMN : if j = 0 generate
                 begin
-                    U4 : FullAdder
+                    U7 : FullAdder
                     port map (
                         A => a(i)(j + 1),
-                        B => not(b(i)(j)),
+                        B => "not"(b(i)(j)),
                         Cin => '0',
                         Sum => c(i)(j),
                         Cout => cout(i)(j)
@@ -152,7 +152,7 @@ begin
                 end generate;
                 REST_COLUMNS : if j > 0 and j < n - 1 generate
                 begin
-                    U2 : FullAdder
+                    U8 : FullAdder
                     port map (
                         A => a(i)(j + 1),
                         B => "not"(b(i)(j)),
@@ -163,7 +163,7 @@ begin
                 end generate;
                 LAST_COLUMN : if j = n - 1 generate
                 begin
-                    U3 : FullAdder
+                    U9 : FullAdder
                     port map (
                         A => cout(i - 1)(j),
                         B => b(i)(j),
@@ -195,4 +195,4 @@ begin
             z(i) <= "not"(cout(n - 2)(n - 1));
         end generate;
     end generate;
-end MUL_ARRAY_ARCH;
+end IMUL_ARRAY_ARCH;
