@@ -38,7 +38,7 @@ entity COM_MUL_ARRAY is
 end COM_MUL_ARRAY;
 
 architecture COM_MUL_ARRAY_ARCH of COM_MUL_ARRAY is
-    component MUL_ARRAY
+    component IMUL_ARRAY
         generic (
             n  :  integer := 16
         );
@@ -61,25 +61,25 @@ architecture COM_MUL_ARRAY_ARCH of COM_MUL_ARRAY is
     signal c0  :  std_logic_vector(15 downto 0);
     signal c1  :  std_logic_vector(15 downto 0);
 begin
-    XU_MUL : MUL_ARRAY
+    XU_MUL : IMUL_ARRAY
     port map (
         x => z(0),
         y => w(0),
         z => xu_32
     );
-    YV_MUL : MUL_ARRAY
+    YV_MUL : IMUL_ARRAY
     port map (
         x => z(1),
         y => w(1),
         z => yv_32
     );
-    YU_MUL : MUL_ARRAY
+    YU_MUL : IMUL_ARRAY
     port map (
         x => z(1),
         y => w(0),
         z => yu_32
     );
-    XV_MUL : MUL_ARRAY
+    XV_MUL : IMUL_ARRAY
     port map (
         x => z(0),
         y => w(1),

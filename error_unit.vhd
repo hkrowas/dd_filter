@@ -72,7 +72,7 @@ architecture ERROR_UNIT_ARCH of ERROR_UNIT is
     signal bot : std_logic_vector(15 downto 0);
     signal left : std_logic_vector(15 downto 0);
     signal e : com;
-    signal mu : std_logic_vector(15 downto 0) := x"0003";
+    signal mu : std_logic_vector(15 downto 0) := x"0020";
     signal mu_e : com;
     signal mu_e_0_32 : std_logic_vector(31 downto 0);
     signal mu_e_1_32 : std_logic_vector(31 downto 0);

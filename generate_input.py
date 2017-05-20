@@ -2,6 +2,8 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 
+random.seed()
+
 def int_to_bin(datain):
     out_string = ""
     twos = 0x8000
@@ -29,7 +31,7 @@ complex(p2, m1), complex(m2, m2), complex(m1, m2), complex(p1, m2),
 complex(p2, m2)])
 
 # Generate input constellation
-datain = np.array([constellation[random.randint(0, 15)] for i in range(N)]) * complex(0.99, 0.0998)
+datain = np.array([constellation[random.randint(0, 15)] for i in range(N)]) * np.exp(0.2j)
 
 f = open('input', 'w')
 
