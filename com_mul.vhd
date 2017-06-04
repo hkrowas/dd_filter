@@ -58,8 +58,8 @@ architecture COM_MUL_ARRAY_ARCH of COM_MUL_ARRAY is
     signal xv_32  :  std_logic_vector(31 downto 0);
 
     -- For testing
-    signal c0  :  std_logic_vector(15 downto 0);
-    signal c1  :  std_logic_vector(15 downto 0);
+    --signal c0  :  std_logic_vector(15 downto 0);
+    --signal c1  :  std_logic_vector(15 downto 0);
 begin
     XU_MUL : IMUL_ARRAY
     port map (
@@ -89,8 +89,6 @@ begin
     yv <= yv_32(30 downto 15);
     yu <= yu_32(30 downto 15);
     xv <= xv_32(30 downto 15);
-    c0 <= xu - yv;
-    c1 <= yu + xv;
-    c(0) <= c0;
-    c(1) <= c1;
+    c(0) <= xu - yv;
+    c(1) <= yu + xv;
 end COM_MUL_ARRAY_ARCH;

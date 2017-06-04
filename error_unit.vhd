@@ -58,7 +58,7 @@ architecture ERROR_UNIT_ARCH of ERROR_UNIT is
             c  :  out com
         );
     end component;
-    component MUL_ARRAY
+    component IMUL_ARRAY
         generic (
             n  :  integer := 16
         );
@@ -68,11 +68,23 @@ architecture ERROR_UNIT_ARCH of ERROR_UNIT is
             z  :  out std_logic_vector(2 * n - 1 downto 0)
         );
     end component;
+    component Adder
+        generic (
+            bitsize : integer := 16      -- default width is 8-bits
+        );
+        port (
+            X, Y :  in  std_logic_vector((bitsize - 1) downto 0);     -- addends
+            Ci   :  in  std_logic;                                    -- carry in
+            S    :  out  std_logic_vector((bitsize - 1) downto 0);    -- sum out
+            Cout_m1 : out std_logic;
+            Co   :  out  std_logic                                    -- carry out
+        );
+    end component;
     signal const_i : std_logic_vector(3 downto 0);
     signal bot : std_logic_vector(15 downto 0);
     signal left : std_logic_vector(15 downto 0);
     signal e : com;
-    signal mu : std_logic_vector(15 downto 0) := x"0020";
+    signal mu : std_logic_vector(15 downto 0) := x"0800";
     signal mu_e : com;
     signal mu_e_0_32 : std_logic_vector(31 downto 0);
     signal mu_e_1_32 : std_logic_vector(31 downto 0);
@@ -80,6 +92,13 @@ architecture ERROR_UNIT_ARCH of ERROR_UNIT is
     signal data_in_mul : tap_array(0 to n_taps - 1);
     signal e0 : std_logic_vector(15 downto 0);
     signal e1 : std_logic_vector(15 downto 0);
+    signal taps_s  :  tap_array(0 to n_taps - 1);
+    type     cout_array  is array(0 to n_taps - 1) of std_logic_vector(0 to 1);
+    signal   cout_m1  : cout_array;
+    signal   cout     :  cout_array;
+    type     overflow_inner is array(0 to 1) of std_logic_vector(1 downto 0);
+    type     overflow_array is array(0 to n_taps - 1) of overflow_inner;
+    signal   overflow  : overflow_array;
 begin
     -- Use sign of real and imaginary parts of data_out to determine quadrant.
     const_i(3) <= not(data_out(0)(15));
@@ -100,13 +119,13 @@ begin
     d(0) <= QAM16(to_integer(unsigned(const_i)))(0);
     d(1) <= QAM16(to_integer(unsigned(const_i)))(1);
     -- Calculate error
-    E_R_MUL : MUL_ARRAY
+    E_R_MUL : IMUL_ARRAY
     port map (
         x => e(0),
         y => mu,
         z => mu_e_0_32
     );
-    E_I_MUL : MUL_ARRAY
+    E_I_MUL : IMUL_ARRAY
     port map (
         x => e(1),
         y => mu,
@@ -126,8 +145,34 @@ begin
         );
     end generate;
     NEW_TAPS: for i in 0 to n_taps - 1 generate
-        taps(i)(0) <= taps_in(i)(0) + mu_e_in(i)(0);
-        taps(i)(1) <= taps_in(i)(1) + mu_e_in(i)(1);
+        REAL_ADDER : Adder
+        port map (
+            X => taps_in(i)(0),
+            Y => mu_e_in(i)(0),
+            Ci => '0',
+            S => taps_s(i)(0),
+            Cout_m1 => cout_m1(i)(0),
+            Co      => cout(i)(0)
+        );
+        C_ADDER : Adder
+        port map (
+            X => taps_in(i)(1),
+            Y => mu_e_in(i)(1),
+            Ci => '0',
+            S => taps_s(i)(1),
+            Cout_m1 => cout_m1(i)(1),
+            Co      => cout(i)(1)
+        );
+        overflow(i)(0) <= (cout_m1(i)(0) xor cout(i)(0)) & taps_in(i)(0)(15);
+        overflow(i)(1) <= (cout_m1(i)(1) xor cout(i)(1)) & taps_in(i)(1)(15);
+        -- Need to prevent overflow
+        -- Real
+        taps(i)(0) <= x"7FFF" when(std_match(overflow(i)(0), "10")) else
+                      x"8000" when(std_match(overflow(i)(0), "11")) else
+                      taps_s(i)(0);
+        taps(i)(1) <= x"7FFF" when(std_match(overflow(i)(1), "10")) else
+                      x"8000" when(std_match(overflow(i)(1), "11")) else
+                      taps_s(i)(1);
     end generate;
     error_out <= e;
 end ERROR_UNIT_ARCH;

@@ -1,3 +1,14 @@
+# ----------------------------------------------------------------------------
+# --
+# --  Plot Output
+# --
+# --  This is the script for plotting the output of the VHDL test bench
+# --  (dd_filter_tb).
+# --
+# --  Revision History:
+# --      2017-06-01   Harrison Krowas   Initial Revision
+# ----------------------------------------------------------------------------
+
 import numpy as np
 import random
 import matplotlib.pyplot as plt
@@ -35,6 +46,22 @@ datastr = datastr.rsplit(" ")
 
 data_out = np.array([complex(bin_to_int(datastr[2 * i]), bin_to_int(datastr[2 * i + 1]))
     for i in range(N)])
+
+error = 0
+error_val = 0
+errors = []
+
+for i in range(len(data_out)):
+    error += np.min(np.absolute(constellation - data_out[i]))
+    error_val += np.min(np.absolute(constellation - data_out[i]))
+    if (i % 100 == 0 and i != 0):
+        errors.append(error)
+        error = 0
+
+print(error_val / len(data_out))
+
+plt.plot(np.arange(len(errors)), errors)
+plt.show()
 
 plt.scatter(data_out.real, data_out.imag)
 plt.show()
