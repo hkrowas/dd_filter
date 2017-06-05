@@ -31,7 +31,6 @@ use work.tap_array.all;
 
 entity MAC is
     port (
-        clock : in std_logic;
         z     : in com;
         w     : in com;
         a     : in com;
@@ -58,11 +57,6 @@ begin
         w => w,
         c => c
     );
-    process (clock)
-    begin
-        if (rising_edge(clock)) then
-            result(0) <= c(0) + a(0);
-            result(1) <= c(1) + a(1);
-        end if;
-    end process;
+    result(0) <= c(0) + a(0);
+    result(1) <= c(1) + a(1);
 end MAC_ARCH;

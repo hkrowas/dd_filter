@@ -110,7 +110,7 @@ begin
             wait for 1 ns;
             mu_e_in <= com_mul_fun(mu_e, data_in_conj);
             wait for 1 ns;
-            -- Test overflow on last step
+            -- Test overflow on last tap. Inputs for last tap are designed to overflow
             if i = 15 then
                 assert(std_match(taps(i)(0), x"7FFF"));
                 assert(std_match(taps(i)(1), x"8000"));
