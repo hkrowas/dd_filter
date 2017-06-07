@@ -55,10 +55,10 @@ for i in range(len(data_out)):
     error += np.min(np.absolute(constellation - data_out[i]))
     error_val += np.min(np.absolute(constellation - data_out[i]))
     if (i % 100 == 0 and i != 0):
-        errors.append(error)
+        errors.append(error / 100 / (p2 * 2))
         error = 0
 
-print(error_val / len(data_out))
+print(error_val / len(data_out) / (p2 * 2))
 
 plt.plot(np.arange(len(errors)), errors)
 plt.show()

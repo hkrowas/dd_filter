@@ -35,7 +35,7 @@ p1 = 0x1000
 m2 = -p1
 m1 = -p2
 
-rotation = 0.2j
+rotation = 0.0j
 
 
 constellation = np.array([complex(m2, p2), complex(m1, p2), complex(p1, p2),
@@ -46,9 +46,13 @@ complex(p2, m2)])
 
 # Generate input constellation
 datain = np.array([constellation[random.randint(0, 15)] for i in range(N)]) * np.exp(rotation)
-window = signal.gaussian(5, std=0.45)
-window = window / np.sum(window)
+window = signal.gaussian(5, std=0.5)
+window = window #/ np.sum(window)
 datain = signal.convolve(datain, window)
+#window[1] = -0.15
+#window[2] = 1
+#window[3] = -0.15
+#datain = signal.convolve(datain, window)
 
 
 f = open('input', 'w')
@@ -60,6 +64,6 @@ for i in range(15, N):
 
 f.write("\n")
 f.write("\n")
-print(error / N)
+print(error / N / (p2 * 2))
 
 f.close()

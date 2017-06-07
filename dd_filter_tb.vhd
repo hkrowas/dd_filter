@@ -53,8 +53,8 @@ architecture DD_FILTER_TB_ARCH of DD_FILTER_TB is
    , (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"), (x"0000", x"0000"));
    signal dd_in0 : std_logic_vector(15 downto 0);
    signal dd_in1 : std_logic_vector(15 downto 0);
-   --signal data_out0 : std_logic_vector(15 downto 0);
-   --signal data_out1 : std_logic_vector(15 downto 0);
+   signal data_out0 : std_logic_vector(15 downto 0);
+   signal data_out1 : std_logic_vector(15 downto 0);
    signal reset : std_logic;
 begin
     UUT : DD_FILTER
@@ -89,7 +89,7 @@ begin
         dd_in0 <= data_in(1)(0);
         dd_in1 <= data_in(1)(1);
         reset <= '1';
-        wait for 39 ns;
+        wait for 400 ns;
         reset <= '0';
         for i in 0 to N - 1 loop
             dd_in(0) <= data_in(i)(0);
@@ -99,8 +99,8 @@ begin
             wait for 20 ns;
             data_out(i)(0) <= dd_out(0);
             data_out(i)(1) <= dd_out(1);
-            --data_out0 <= dd_out(0);
-            --data_out1 <= dd_out(1);
+            data_out0 <= dd_out(0);
+            data_out1 <= dd_out(1);
         end loop;
         -- Write out output
         for i in 0 to N - 1 loop

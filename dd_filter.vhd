@@ -45,7 +45,7 @@ entity DD_FILTER is
 end DD_FILTER;
 
 architecture DD_FILTER_ARCH of DD_FILTER is
-    component FIR_FILTER
+    component FIR_FILTER_TRAN
         generic (
             n_taps  :  integer := 16
         );
@@ -78,7 +78,7 @@ architecture DD_FILTER_ARCH of DD_FILTER is
     signal taps        :  tap_array(0 to n_taps - 1);
     signal ein         :  tap_array(0 to n_taps - 1);
 begin
-    filter  :  FIR_FILTER
+    filter  :  FIR_FILTER_TRAN
         generic map (
             n_taps => n_taps
         )

@@ -104,7 +104,9 @@ begin
             -- Taps update
             if (reset = '1') then
                 taps <= taps_reset;
-                taps(7)(0) <= x"7EFF";
+                taps(6)(0) <= x"F000";
+                taps(7)(0) <= x"7000";
+                taps(8)(0) <= x"F000";
                 for i in 1 to n_taps - 1 loop
                     ein(i)(0) <= x"0000";
                     ein(i)(1) <= x"0000";

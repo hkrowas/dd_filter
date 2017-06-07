@@ -3,6 +3,8 @@
 --  ERROR_UNIT Test Bench
 --
 --  This is the test bernch for the error unit of the DD filter (error_unit.vhd)
+--  It tests the updated tap coefficients for one set of inputs, and the last
+--  tap coefficient is set to result in an overflow.
 --
 --  Revision History:
 --     2017-05-05  Harrison Krowas     Initial revision.
