@@ -17,11 +17,12 @@
 --  Inputs:
 --      data_in   -  Input data to the filter. Needed to compute new tap values.
 --      data_out  -  Output data from the filter.
---      taps      -  Current value of filter taps.
+--      taps_in      -  Current value of filter taps.
 --
 --  Outputs:
---      taps_error   -  New value of taps based on error.
+--      taps         -  New value of taps based on error.
 --      error_out    -  Computed error signal. Used for testing purposes.
+--      d            -  Decision signal. Which 16QAM point is closest to data_out
 --
 --  Generic:
 --      n_taps   -  Number of taps

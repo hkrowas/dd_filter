@@ -49,10 +49,6 @@ datain = np.array([constellation[random.randint(0, 15)] for i in range(N)]) * np
 window = signal.gaussian(5, std=0.5)
 window = window #/ np.sum(window)
 datain = signal.convolve(datain, window)
-#window[1] = -0.15
-#window[2] = 1
-#window[3] = -0.15
-#datain = signal.convolve(datain, window)
 
 
 f = open('input', 'w')

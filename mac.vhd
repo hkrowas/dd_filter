@@ -2,8 +2,8 @@
 --
 --  MAC
 --
---  This is an implementation of a MAC unit. This saves the result into a
---  register, so it requires a clock.
+--  This is an implementation of a MAC unit. It does not contain a register that
+--  saves the result; it is entirely combinational.
 --
 --  Revision History:
 --      2017-06-05   Harrison Krowas   Initial Revision

@@ -3,7 +3,9 @@
 --  Signed Array Multiplier
 --
 --  This is an implementation of a signed array multiplier. It is entirely
---  combinational.
+--  combinational. It uses the approach described in
+--  https://en.wikipedia.org/wiki/Binary_multiplier, which minimizes the logic
+--  needed.
 --
 --  Revision History:
 --      2017-05-14   Harrison Krowas   Initial Revision

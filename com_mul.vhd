@@ -3,7 +3,7 @@
 --  Complex Array Multiplier
 --
 --  This is an implementation of a complex array multiplier. It is entirely
---  combinational, and consists of 4 parallel multipliers.
+--  combinational, and consists of 4 parallel multipliers followed by two adders.
 --
 --  Revision History:
 --      2017-04-24   Harrison Krowas   Initial Revision

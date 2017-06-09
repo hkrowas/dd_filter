@@ -2,7 +2,7 @@
 --
 --  DD_FILTER Test Bench
 --
---  This is the test bernch for the complete Decision Directed Filter.
+--  This is the test bench for the complete Decision Directed Filter.
 --
 --  Revision History:
 --      2017-05-06   Harrison Krowas   Initial Revision

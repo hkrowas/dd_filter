@@ -2,8 +2,9 @@
 --
 --  Transverse FIR filter
 --
---  This is an implementation of a transverse FIR filter. It has less logic
---  depth than an ordinary FIR filter.
+--  This is an implementation of a transpose FIR filter. It has less logic
+--  depth than an ordinary FIR filter, so it is suitable for hardware
+--  implementation.
 --
 --  Revision History:
 --      2017-06-05   Harrison Krowas   Initial Revision
@@ -70,6 +71,8 @@ architecture FIR_FILTER_TRAN_ARCH of FIR_FILTER_TRAN is
         );
     end component;
 begin
+    -- The filter consists of several MAC units in a linear series. This is
+    -- mathematically equivalent to an ordinary FIR filter.
     FIRST_MAC : MAC
     port map (
         z => ein(0),
@@ -97,6 +100,7 @@ begin
             for i in 1 to n_taps - 1 loop
                 ein(i) <= ein(i - 1);
             end loop;
+            -- Delay line between mac units.
             for i in 0 to n_taps - 1 loop
                 sums_buf(i) <= sums(i);
             end loop;
